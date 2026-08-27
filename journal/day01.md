@@ -52,3 +52,10 @@ A likely cause of a sudden triple electric bill is a malfunctioning HVAC system,
 [You are a regulatory compliance officer.]
 A likely cause is a malfunctioning electric water heater or HVAC system running continuously due to a failed thermostat or heating element.
 
+
+
+triage_vo.py
+Correctness: Would you have triaged each the same way? Where would a 15-year billing analyst disagree?
+Format discipline: Did it follow the format exactly, all 3 times? Any invented categories or extra prose?
+Rationale grounding: Does the rationale cite the specific data, or is it generic filler?
+Scale question: What breaks if this runs on 300 exceptions/day with no human review? (Write at least 3 things.)
