@@ -26,10 +26,12 @@ Exception:
 {exception}"""
 
 if __name__ == "__main__":
-    for i, exc in enumerate(EXCEPTIONS, 1):
+    for record in EXCEPTIONS:
         resp = client.messages.create(
             model="claude-sonnet-4-6",
             max_tokens=300,
-            messages=[{"role": "user", "content": PROMPT_TEMPLATE.format(exception=exc)}],
+            messages=[
+                {"role": "user", "content": PROMPT_TEMPLATE.format(exception=record["text"])}
+            ],
         )
-        print(f"===== Exception {i} =====\n{resp.content[0].text}\n")
+        print(f"===== {record['id']} =====\n{resp.content[0].text}\n")
