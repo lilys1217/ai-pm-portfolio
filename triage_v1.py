@@ -5,8 +5,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 import anthropic
 
-from exceptions import EXCEPTIONS, NON_BILLING_EXCEPTIONS
-
+from exceptions import EXCEPTIONS
 load_dotenv()
 client = anthropic.Anthropic()
 
@@ -61,32 +60,42 @@ def triage(exception_text: str) -> TriageResult:
             """
             You are a billing-exception triage assistant for an electric cooperative. Base the rationale only on data present in the exception.
             <category_definitions>
-            - High Bill Complaint: the dollar amount is unexpectedly high while the read sequence
-            and usage are internally consistent with each other. Decisive signal: reads and usage
-            look normal, the bill does not. The meter is NOT implicated.
-            
-            - Meter Read Anomaly: the read sequence itself is implausible - rollbacks, spikes
-            inconsistent with history, stuck registers - independent of the dollar amount.
-            Decisive signal: the reads, not the bill, are what looks wrong.
+            - High Bill Complaint: the dollar amount is unexpectedly high while the reads and
+            usage are internally consistent with each other AND plausible against the
+            account's history. Decisive signal: reads and usage look normal; the bill does
+            not. The meter is NOT implicated.
 
-            - Estimated Read Streak: Estimated Read Streak: The current month’s estimated kWh usage
-            is at least 20% higher than the previous month’s estimated or utility-recorded kWh usage. 
-            Decisive Signal: Both the current month’s billed amount and kWh usage have increased by at 
-            least 20% compared with the previous month, with no rate change that would otherwise explain 
-            the increase.
-            
-            - Rate Code Mismatch: Rate Code Mismatch: The rate code shown on the current bill does not 
-            match the rate code in the customer’s latest rate assignment history record. 
-            Decisive Signal: The rate code on the current bill has changed, while the customer 
-            reports that they neither requested a rate change nor received notification of one.
-            
-            - Net Metering True-Up: Net Metering True-Up: The account has active net metering status, 
-            but the current bill shows no generated kWh and no generation credit. Decisive Signal: The 
-            account’s net metering status is active, while both generated kWh and generation credit on 
-            the current bill are zero.
-            
-            - Other / Needs Human Review: not a billing matter (outages, field damage, service
-            requests), OR the fields contradict each other.
+            - Meter Read Anomaly: the reads themselves are the suspect part of the record -
+            the sequence is impossible, or the recorded usage cannot be trusted. Patterns:
+            a read lower than the previous read (rollback); a register recording zero or
+            not advancing (stuck register, including the generation register on a
+            net-metered account); a usage surge immediately after a meter change; usage
+            far outside the account's history for two or more consecutive periods with no
+            reported change. Decisive signal: you would verify the meter before touching
+            the bill - the answer to "can I trust these reads?" is no. NOT this category
+            when reads and usage are internally consistent AND plausible against the
+            account's history and only the dollar amount is in dispute (that is High Bill
+            Complaint), and NOT when the reads are estimates (that is Estimated Read
+            Streak).
+
+            - Estimated Read Streak: two or more consecutive billing periods with estimated
+            (not actual) reads, regardless of amount. Decisive signal: the read-type field
+            says "estimated" for consecutive periods. The risk is divergence from actual
+            usage and a catch-up bill.
+
+            - Rate Code Mismatch: the rate code on the current bill does not match the
+            customer's latest rate assignment history record. Decisive signal: the bill's
+            rate code changed while the customer reports neither requesting a rate change
+            nor receiving notification of one.
+
+            - Net Metering True-Up: the billing of a net-metered account is wrong - banked
+            kWh credits missing or misapplied at settlement, or the true-up calculation is
+            incorrect. If generation appears not to be recorded at all, that is a register
+            fault - classify as Meter Read Anomaly.
+
+            - Other / Needs Human Review: not a billing matter (outages, field damage,
+            service requests, arrangement requests), OR the fields conflict in a way that
+            prevents identifying any cause.
             </category_definitions>
 
             <priority_rules>
@@ -106,6 +115,21 @@ def triage(exception_text: str) -> TriageResult:
             <rationale_rules>
             - The rationale must be a single sentence that cites specific data fields from the exception.
             </rationale_rules>
+            <routing_rules>
+            Routing is decided by what happens next, not by the category name:
+            - CSR Callback: the next step is a conversation with the member - outage status,
+            service requests, arrangement requests, complaints about service itself.
+            - Billing Analyst: the next step is investigating or correcting billing records -
+            bill computation errors, rate code corrections, estimated-read catch-up review,
+            net metering credit and true-up math, and any record where no cause can be
+            identified.
+            - Field Service Order: the next step is a technician at the meter - suspected
+            meter or register faults, physical access problems, post-meter-change read
+            verification.
+            Tiebreakers:
+            - If the meter must be verified before the bill can be trusted, Field Service
+            Order outranks Billing Analyst.
+            </routing_rules>
 
             <examples>
             <example>
@@ -145,7 +169,7 @@ def triage(exception_text: str) -> TriageResult:
     return TriageResult.model_validate_json(raw)
 
 if __name__ == "__main__":
-    for i, exc in enumerate(EXCEPTIONS + NON_BILLING_EXCEPTIONS, 1):
+    for i, exc in enumerate(EXCEPTIONS, 1):
         r = triage(exc)
         print(f"===== Exception {i} =====")
         print(f"  category : {r.category}")
