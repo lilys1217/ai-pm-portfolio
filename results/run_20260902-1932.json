@@ -1,0 +1,250 @@
+{
+  "run_at": "2026-09-02T19:32:08",
+  "limit": 12,
+  "summary": {
+    "records": 12,
+    "overall": {
+      "category": {
+        "correct": 10,
+        "total": 12,
+        "accuracy": 0.8333333333333334
+      },
+      "priority": {
+        "correct": 11,
+        "total": 12,
+        "accuracy": 0.9166666666666666
+      },
+      "routing": {
+        "correct": 11,
+        "total": 12,
+        "accuracy": 0.9166666666666666
+      }
+    },
+    "per_gold_category": {
+      "Estimated Read Streak": {
+        "correct": 3,
+        "total": 4,
+        "accuracy": 0.75
+      },
+      "High Bill Complaint": {
+        "correct": 0,
+        "total": 1,
+        "accuracy": 0.0
+      },
+      "Meter Read Anomaly": {
+        "correct": 2,
+        "total": 2,
+        "accuracy": 1.0
+      },
+      "Other / Needs Human Review": {
+        "correct": 4,
+        "total": 4,
+        "accuracy": 1.0
+      },
+      "Rate Code Mismatch": {
+        "correct": 1,
+        "total": 1,
+        "accuracy": 1.0
+      }
+    },
+    "escalation_safety": {
+      "missed_human_review": {
+        "count": 0,
+        "ids": [],
+        "detail": []
+      },
+      "over_escalated_to_human_review": {
+        "count": 0,
+        "ids": [],
+        "detail": []
+      }
+    },
+    "calibration": {
+      "high": {
+        "count": 8,
+        "correct": 8,
+        "category_accuracy": 1.0
+      },
+      "medium": {
+        "count": 3,
+        "correct": 2,
+        "category_accuracy": 0.6666666666666666
+      },
+      "low": {
+        "count": 1,
+        "correct": 0,
+        "category_accuracy": 0.0
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "EX-001",
+      "gold_category": "Meter Read Anomaly",
+      "gold_priority": "P2",
+      "gold_routing": "Field Service Order",
+      "pred_category": "Meter Read Anomaly",
+      "pred_priority": "P2",
+      "pred_routing": "Field Service Order",
+      "confidence": "high",
+      "rationale": "Actual reads show 4,890 kWh this period and an elevated 2,900 kWh the prior period versus a 12-month average of 1,450 kWh, representing two consecutive periods of anomalous usage that cannot be trusted without field verification of the meter.",
+      "category_match": true,
+      "priority_match": true,
+      "routing_match": true
+    },
+    {
+      "id": "EX-002",
+      "gold_category": "High Bill Complaint",
+      "gold_priority": "P2",
+      "gold_routing": "Billing Analyst",
+      "pred_category": "Meter Read Anomaly",
+      "pred_priority": "P2",
+      "pred_routing": "Field Service Order",
+      "confidence": "low",
+      "rationale": "The billed amount of $1000 is drastically higher than last month's $100, yet the kWh usage is reported as the same for both periods with reads advancing from 80 to 100, suggesting a billing calculation or rate application error that cannot be reconciled with the usage data.",
+      "category_match": false,
+      "priority_match": true,
+      "routing_match": false
+    },
+    {
+      "id": "EX-003",
+      "gold_category": "Estimated Read Streak",
+      "gold_priority": "P2",
+      "gold_routing": "Billing Analyst",
+      "pred_category": "Estimated Read Streak",
+      "pred_priority": "P2",
+      "pred_routing": "Billing Analyst",
+      "confidence": "high",
+      "rationale": "The account has three consecutive estimated reads with usage doubling compared to the historical average, indicating significant divergence risk and a likely catch-up bill scenario.",
+      "category_match": true,
+      "priority_match": true,
+      "routing_match": true
+    },
+    {
+      "id": "EX-004",
+      "gold_category": "Other / Needs Human Review",
+      "gold_priority": "P1",
+      "gold_routing": "CSR Callback",
+      "pred_category": "Other / Needs Human Review",
+      "pred_priority": "P1",
+      "pred_routing": "CSR Callback",
+      "confidence": "high",
+      "rationale": "Member reports active outage due to vehicle collision with pole and transformer damage with no power at the residence, which is a service emergency requiring immediate dispatch coordination and restoration timeline communication, not a billing matter.",
+      "category_match": true,
+      "priority_match": true,
+      "routing_match": true
+    },
+    {
+      "id": "EX-005",
+      "gold_category": "Rate Code Mismatch",
+      "gold_priority": "P2",
+      "gold_routing": "Billing Analyst",
+      "pred_category": "Rate Code Mismatch",
+      "pred_priority": "P2",
+      "pred_routing": "Billing Analyst",
+      "confidence": "medium",
+      "rationale": "Member reports the rate code on the latest bill differs from last month's bill and states no rate change was requested or communicated, matching the decisive signal for a Rate Code Mismatch requiring billing record investigation.",
+      "category_match": true,
+      "priority_match": true,
+      "routing_match": true
+    },
+    {
+      "id": "EX-006",
+      "gold_category": "Meter Read Anomaly",
+      "gold_priority": "P2",
+      "gold_routing": "Field Service Order",
+      "pred_category": "Meter Read Anomaly",
+      "pred_priority": "P2",
+      "pred_routing": "Field Service Order",
+      "confidence": "medium",
+      "rationale": "The net metering account shows no recorded generation kWh or generation credits on the last bill, and the member suspects the net meter may not be functioning, indicating a possible register fault that requires field verification.",
+      "category_match": true,
+      "priority_match": true,
+      "routing_match": true
+    },
+    {
+      "id": "EX-007",
+      "gold_category": "Other / Needs Human Review",
+      "gold_priority": "P3",
+      "gold_routing": "CSR Callback",
+      "pred_category": "Other / Needs Human Review",
+      "pred_priority": "P3",
+      "pred_routing": "CSR Callback",
+      "confidence": "high",
+      "rationale": "Member is requesting a payment arrangement over 3 months for an outstanding balance, which is a non-billing service request requiring a conversation with a CSR.",
+      "category_match": true,
+      "priority_match": true,
+      "routing_match": true
+    },
+    {
+      "id": "EX-008",
+      "gold_category": "Other / Needs Human Review",
+      "gold_priority": "P1",
+      "gold_routing": "CSR Callback",
+      "pred_category": "Other / Needs Human Review",
+      "pred_priority": "P1",
+      "pred_routing": "CSR Callback",
+      "confidence": "high",
+      "rationale": "Member is currently without service following a thunderstorm and is inquiring about restoration status, which is an outage inquiry requiring a conversation with a CSR rather than a billing action.",
+      "category_match": true,
+      "priority_match": true,
+      "routing_match": true
+    },
+    {
+      "id": "EX-009",
+      "gold_category": "Other / Needs Human Review",
+      "gold_priority": "P3",
+      "gold_routing": "CSR Callback",
+      "pred_category": "Other / Needs Human Review",
+      "pred_priority": "P3",
+      "pred_routing": "CSR Callback",
+      "confidence": "high",
+      "rationale": "The exception is a service feedback comment about CSR response times and is not a billing matter, containing no account reads, usage, or billing data to evaluate.",
+      "category_match": true,
+      "priority_match": true,
+      "routing_match": true
+    },
+    {
+      "id": "EX-010",
+      "gold_category": "Estimated Read Streak",
+      "gold_priority": "P2",
+      "gold_routing": "Field Service Order",
+      "pred_category": "Meter Read Anomaly",
+      "pred_priority": "P2",
+      "pred_routing": "Field Service Order",
+      "confidence": "medium",
+      "rationale": "A usage surge immediately after a meter change was reported on Acct 66666, resulting in an unexpectedly high bill of $500, which is a known pattern of unreliable reads requiring field verification of the new meter.",
+      "category_match": false,
+      "priority_match": true,
+      "routing_match": true
+    },
+    {
+      "id": "EX-011",
+      "gold_category": "Estimated Read Streak",
+      "gold_priority": "P2",
+      "gold_routing": "Billing Analyst",
+      "pred_category": "Estimated Read Streak",
+      "pred_priority": "P2",
+      "pred_routing": "Billing Analyst",
+      "confidence": "high",
+      "rationale": "Account has 4 consecutive months of estimated reads with usage now above the 12-month actual average, indicating potential divergence that may result in a catch-up bill requiring billing record review.",
+      "category_match": true,
+      "priority_match": true,
+      "routing_match": true
+    },
+    {
+      "id": "EX-012",
+      "gold_category": "Estimated Read Streak",
+      "gold_priority": "P3",
+      "gold_routing": "Field Service Order",
+      "pred_category": "Estimated Read Streak",
+      "pred_priority": "P2",
+      "pred_routing": "Field Service Order",
+      "confidence": "high",
+      "rationale": "Customer confirmed estimated reads for more than 3 consecutive months due to locked gate access issue, which is now resolved and requires a field technician to perform an actual meter read.",
+      "category_match": true,
+      "priority_match": false,
+      "routing_match": true
+    }
+  ]
+}

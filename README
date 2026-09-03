@@ -1,0 +1,65 @@
+## Week 1 Baseline
+
+**Date:** 2026-09-02 · **Commit:** f4e16e7 · **Model:** claude-sonnet-4-6 · **n=20**
+Baseline: `results/run_20260902-2126.json` · Replicate (noise floor): `results/run_20260902-2209.json`
+
+### The golden set
+20 records, single expert annotator, synthetic but domain-realistic. Coverage:
+every billing category ≥3 cases, 4 out-of-scope cases, 1 designated boundary
+case, 1 contradiction probe. Every gold label carries an adjudication note
+stating its decisive signal.
+
+### Results
+
+| Field | Accuracy |
+|-------|---------:|
+| Category | 95% (19/20) |
+| Priority | 85% (17/20) |
+| Routing  | 85% (17/20) |
+
+**By category:** 5 of 6 categories at 100%; the single category miss is the
+deliberate contradiction probe (EX-002), misread as a meter fault.
+
+**Escalation safety:** 0 dangerous errors (out-of-scope filed as billing) and
+0 over-escalations, across 4 out-of-scope records.
+
+**Calibration:** "high" 100% (10/10), "medium" 87% (7/8) — no inversion;
+"low" (2/2) too small to read.
+
+**Noise floor:** two identical-spec runs differ by 1 record (5 points, priority
+field, EX-019) — the bar any future change must clear.
+
+**Cost:** $0.11 per 20-record run ≈ half a cent per triaged exception.
+
+### What error analysis found
+Every miss received a three-way verdict (gold wrong / spec weak / model wrong):
+
+- **Gold wrong: 4 · Spec weak: 2 · Model wrong: 0.** The answer key had more
+  errors than the model — a well-documented pattern in single-annotator
+  datasets, and exactly the risk this README's limitations flagged.
+- Three of the four label errors are the same error: an under-specified P2/P3
+  priority boundary (EX-012, EX-017, EX-019) — which is also where the
+  run-to-run instability lives (EX-019).
+- Both spec-weak misses have named missing sentences (EX-002: bill-computation
+  tiebreaker; EX-015: routing rule for P1 disconnection risk).
+
+### Honest limitations
+- n=20 is a smoke test: gross failures are meaningful; small differences are
+  one record of noise.
+- Single annotator — and the risk materialized: 4 of 6 miss-verdicts were
+  annotation errors, now queued for correction.
+- Synthetic data written by the annotator — realistic, but style-correlated.
+- The "low" confidence bucket (n=2) and the cause-unidentifiable contradiction
+  flavor remain effectively untested (golden-set expansion items).
+
+### Next steps (dated)
+2026-09-02 — two-stage plan for Thursday:
+
+1. **Gold corrections (not an experiment):** fix 4 annotation errors
+   (EX-012 P3→P2, EX-014 routing→Billing Analyst, EX-017 P3→P2,
+   EX-019 P3→P2), update their notes, rerun → **baseline v2 on gold v2**.
+2. **One spec change (the experiment):** add a bill-computation tiebreaker to
+   the category definitions. Prediction: fixes EX-002 category and routing,
+   changes nothing else, and must beat the 1-record noise floor.
+   Queued next: P2/P3 priority-rule rewrite; P1 disconnection routing rule.
+   Result: *pending*.
