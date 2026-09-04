@@ -97,7 +97,7 @@ EXCEPTIONS = [
     {   "id": "EX-012",
         "text": """Accet 12: customer called in mentioned he has been getting estimated reads and estimated bill for 
          more than 3 months, seems like it's due to the locked gate. now it's fixed, request actual read check """,
-        "gold": {"category": "Estimated Read Streak", "priority": "P3", "routing": "Field Service Order", 
+        "gold": {"category": "Estimated Read Streak", "priority": "P2", "routing": "Field Service Order", 
                 "note": "Estimates caused by inaccessible meter (locked gate, dog) → access order"},
         },
     {   "id": "EX-013",
@@ -108,7 +108,7 @@ EXCEPTIONS = [
             },
     {   "id": "EX-014",
             "text": """Acct 14: got a really high bill this month, it's actual reading and no rate changes""",
-            "gold": {"category": "High Bill Complaint", "priority": "P2", "routing": "CSR Callback", 
+            "gold": {"category": "High Bill Complaint", "priority": "P2", "routing": "Billing Analyst", 
                     "note": "Usage genuinely up, both reads actual, meter not implicated"},
             },
     {   "id": "EX-015",
@@ -127,7 +127,7 @@ EXCEPTIONS = [
     {   "id": "EX-017",
             "text": """Acct 17: resident account signed up for budget bill this month, but on the bill, it is still 
               the old rate. can someone check if my rate change request was actually done and saved under my account?  """,
-            "gold": {"category": "Rate Code Mismatch", "priority": "P3", "routing": "Billing Analyst", 
+            "gold": {"category": "Rate Code Mismatch", "priority": "P2", "routing": "Billing Analyst", 
                     "note": "Correct rate, wrong effective date (or seasonal rate not switched)"},
             },
     {   "id": "EX-018",
@@ -139,7 +139,7 @@ EXCEPTIONS = [
     {   "id": "EX-019",
             "text": """Acct 19: by checking my account for kwh credit balance, I found it's lower than my expectation. can 
              someone verify the calculation and explain to me? """,
-            "gold": {"category": "Net Metering True-Up", "priority": "P3", "routing": "Billing Analyst", 
+            "gold": {"category": "Net Metering True-Up", "priority": "P2", "routing": "Billing Analyst", 
                     "note": "Credits present, member questions the calculation"},
             },
     {   "id": "EX-020",
