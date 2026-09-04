@@ -23,3 +23,22 @@ candidate if priority lands at 19/20 instead.
 Would falsify the prediction: any *category* movement; more than one
 unexpected flip; a record outside {012, 014, 017, 019} changing on a field
 tonight's fixes don't touch.
+
+## Day 6 — Baseline v2 (gold v2)
+
+Date: 2026-09-03 · Commit: ⟨6ac597edd29c2e6aa05ca60564bc9174649d467e⟩ (gold v2) · Model: claude-sonnet-4-6 · n=20
+File: results/⟨run_20260903-1912.json⟩ · Cost: ~$0.11
+Supersedes: baseline v1 (run_20260903-2013.json, gold v1) — v1 numbers are
+not comparable to anything after tonight.
+
+| Field    | Predicted | Actual | Verdict |
+|----------|----------:|-------:|---------|
+| Category |     19/20 | ⟨19/20⟩ | ⟨held⟩ |
+| Priority |     20/20 | ⟨20/20⟩ | ⟨held⟩ |
+| Routing  |     18/20 | ⟨18/20⟩ | ⟨held⟩ |
+
+Prediction line: ⟨held on all three fields; no unexpected flips — the four
+corrected records became hits, EX-002 and EX-015 miss as designed.⟩
+
+Carry-forward misses (the complete list): EX-002 (category, routing) ·
+EX-015 (routing).

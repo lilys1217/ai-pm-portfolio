@@ -63,7 +63,9 @@ def triage(exception_text: str) -> TriageResult:
             - High Bill Complaint: the dollar amount is unexpectedly high while the reads and
             usage are internally consistent with each other AND plausible against the
             account's history. Decisive signal: reads and usage look normal; the bill does
-            not. The meter is NOT implicated.
+            not. The meter is NOT implicated. Tiebreaker: if the billed amount cannot be derived 
+            from the recorded usage and rate while the reads cohere with each other, the bill computation is
+            implicated - classify as High Bill Complaint, not a meter fault.
 
             - Meter Read Anomaly: the reads themselves are the suspect part of the record -
             the sequence is impossible, or the recorded usage cannot be trusted. Patterns:
