@@ -42,3 +42,27 @@ corrected records became hits, EX-002 and EX-015 miss as designed.⟩
 
 Carry-forward misses (the complete list): EX-002 (category, routing) ·
 EX-015 (routing).
+
+
+## Day 6 — Experiment: bill-computation tiebreaker
+
+Date: 2026-09-03 · Commit: ⟨6ac597edd29c2e6aa05ca60564bc9174649d467e⟩ (spec change alone) · Compared against: baseline v2 (⟨run_20260903-2023.json⟩)
+File: results/⟨run_20260903-2023.json⟩ · Cost: ~$0.11
+Change (one variable): one tiebreaker sentence added to <category_definitions> after High Bill Complaint.
+
+Prediction (from Day 5, pre-registered): fixes EX-002 category and routing;
+changes nothing else; must beat the 1-record noise floor.
+
+| Check | Predicted | Actual | Verdict |
+|-------|-----------|--------|---------|
+| EX-002 category → High Bill Complaint | flip to hit | ⟨hit⟩ | ⟨held⟩ |
+| EX-002 routing → Billing Analyst      | flip to hit | ⟨hit⟩ | ⟨held⟩ |
+| EX-015 routing (must stay a miss — untouched by this change) | miss | ⟨miss⟩ | ⟨held⟩ |
+| Regression check: all 17 previously-passing records | no change | ⟨no change⟩ | ⟨held⟩ |
+
+Overall verdict: ⟨PREDICTION HELD — record-specific claim confirmed, zero
+regressions. Category 20/20, priority 20/20, routing 19/20.⟩
+
+Interpretation: ⟨one sentence — e.g., "the definition layer, not the model,
+was the missing piece for flavor-one contradictions — consistent with the
+Day 5 verdict distribution."⟩

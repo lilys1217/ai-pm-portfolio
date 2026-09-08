@@ -1,0 +1,1 @@
+Pre-register: fixes EX-015 routing; EX-002 (now passing) must stay passing; nothing else moves; ±1-record noise floor applies.

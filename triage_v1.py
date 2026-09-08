@@ -121,16 +121,21 @@ def triage(exception_text: str) -> TriageResult:
             Routing is decided by what happens next, not by the category name:
             - CSR Callback: the next step is a conversation with the member - outage status,
             service requests, arrangement requests, complaints about service itself.
+            
             - Billing Analyst: the next step is investigating or correcting billing records -
             bill computation errors, rate code corrections, estimated-read catch-up review,
             net metering credit and true-up math, and any record where no cause can be
-            identified.
+            identified. 
+
             - Field Service Order: the next step is a technician at the meter - suspected
             meter or register faults, physical access problems, post-meter-change read
             verification.
+            
             Tiebreakers:
             - If the meter must be verified before the bill can be trusted, Field Service
             Order outranks Billing Analyst.
+            -Priority does not change routing. A disconnection notice tied to a disputed bill 
+            routes to Billing Analyst — correcting the bill is what removes the service risk.
             </routing_rules>
 
             <examples>

@@ -63,3 +63,15 @@ Every miss received a three-way verdict (gold wrong / spec weak / model wrong):
    changes nothing else, and must beat the 1-record noise floor.
    Queued next: P2/P3 priority-rule rewrite; P1 disconnection routing rule.
    Result: *pending*.
+
+
+### Next steps (dated)
+2026-09-02 — two-stage plan for Thursday: [...unchanged...]
+   **Result (2026-09-03):** ⟨Prediction held. Gold v2 established (4 annotation
+   errors corrected). The tiebreaker experiment fixed EX-002's category and
+   routing with zero regressions — baseline now: category 20/20, priority
+   20/20, routing 19/20 (n=20; one record of noise floor applies).⟩
+
+2026-09-03 — next experiment queued: ⟨routing rule for P1 disconnection risk
+(targets EX-015, the last remaining miss). Prediction: fixes EX-015 routing,
+changes nothing else.⟩ Result: *pending*.
