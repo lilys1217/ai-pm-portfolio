@@ -102,6 +102,9 @@ def triage(exception_text: str) -> TriageResult:
 
             <priority_rules>
             - P1: the member is currently without service or facing disconnection.
+            Precedence: if the member is without service or a disconnection notice has
+            been issued, priority is P1 - imminent service risk outranks, and the
+            unverified-discrepancy rule does not downgrade it.
             - P2: the member is facing billing calculation issue, meter reading issue, 
             or billing rate issue with no service risk. A member-reported money discrepancy is treated as a 
             money error in flight until verified - P2, even when unconfirmed. Left unverified, a discrepancy
