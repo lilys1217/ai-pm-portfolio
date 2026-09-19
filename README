@@ -75,3 +75,39 @@ Every miss received a three-way verdict (gold wrong / spec weak / model wrong):
 2026-09-03 — next experiment queued: ⟨routing rule for P1 disconnection risk
 (targets EX-015, the last remaining miss). Prediction: fixes EX-015 routing,
 changes nothing else.⟩ Result: *pending*.
+
+### Next steps (dated)
+[...]
+2026-09-18 — experiment: P2/P3 impact rule for unconfirmed discrepancies.
+Shop ruling encoded as one clarification in <priority_rules> + EX-019 gold
+note. Prediction: EX-019 stable at P2 across two runs; nothing else moves.
+   **Result (2026-09-18):** Held on the target — EX-019, the record that
+   flipped on five runs across two weeks, sat at P2 on both runs. The
+   regression clause caught a real interaction: EX-015 P1→P2 on both runs —
+   the new rule's consequence wording composed with the disconnection-notice
+   routing rule to downgrade an imminent-risk case. Attributed; precedence
+   fix queued below. Run-pair numbers: category 19–20/20 (EX-002 wobbled
+   once, low confidence), priority 19/20 (EX-015, attributed), routing
+   19–20/20.
+
+2026-09-18 — next experiment queued: precedence clause in <priority_rules> —
+imminent service risk (no service, or disconnection notice issued) is P1 and
+is not downgraded by the discrepancy rule. Prediction: EX-015 restored to P1
+on both runs; EX-019 stays P2; nothing else moves. Result: *pending*.
+
+### Design decisions
+[...]
+- **Priority is defined by impact; routing by next action.** A
+  routing-derived priority definition was proposed twice and rejected twice
+  against the golden set's own labels: EX-001/006/010/012 are P2 with Field
+  Service Order routing (kills "P2 = Billing Analyst involved"), and
+  EX-004/008 are P1 with CSR Callback (kills "CSR = P3"). The correlation
+  between the fields is real but has a common cause — the record's facts —
+  so it survives as lint checks in the harness, never as definitions.
+- **Unconfirmed money discrepancies are P2** (shop ruling, 2026-09-18). A
+  member-reported discrepancy is treated as a money error in flight until
+  verified, because an unverified discrepancy carries forward on the account
+  and compounds — toward delinquency, disconnection, and added charges — so
+  the member is financially affected from the moment it is reported. Encoded
+  as a clarification after the general P2/P3 rule; EX-019, unstable across
+  five prior runs, stabilized immediately under it.
