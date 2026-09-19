@@ -158,6 +158,41 @@ def report(summary):
         print(f"  {level:<12} {d['count']:>3}  {acc:>18}")
 
 
+OUTAGE_TERMS = ("outage", "no power", "without power", "disconnect")
+
+
+def lint_checks(records, results):
+    """Print hand-verify warnings for suspicious label/prediction combinations.
+
+    Advisory only: reads the scored rows, changes nothing, writes nothing.
+    Both checks run against the gold labels and the predictions separately.
+    """
+    texts = {rec["id"]: rec["text"] for rec in records}
+    warnings = []
+
+    for row in results:
+        text = texts.get(row["id"], "").lower()
+        for side in ("gold", "pred"):
+            priority = row[f"{side}_priority"]
+            routing = row[f"{side}_routing"]
+            if priority == "P3" and routing == "Field Service Order":
+                warnings.append(
+                    f"LINT [{side}] {row['id']}: P3 + FSO \u2014 verify by hand"
+                )
+            if priority == "P1" and not any(t in text for t in OUTAGE_TERMS):
+                warnings.append(
+                    f"LINT [{side}] {row['id']}: P1 without outage/disconnection "
+                    "language \u2014 verify by hand"
+                )
+
+    print("\n===== LINT (advisory \u2014 does not affect scoring) =====")
+    if not warnings:
+        print("LINT: clean")
+        return
+    for line in warnings:
+        print(line)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Score triage_v1 against the gold labels in exceptions.py."
@@ -179,6 +214,7 @@ def main():
     rows = run(records)
     summary = summarize(rows)
     report(summary)
+    lint_checks(records, rows)
 
     results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results")
     os.makedirs(results_dir, exist_ok=True)
