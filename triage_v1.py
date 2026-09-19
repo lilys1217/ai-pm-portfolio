@@ -103,7 +103,11 @@ def triage(exception_text: str) -> TriageResult:
             <priority_rules>
             - P1: the member is currently without service or facing disconnection.
             - P2: the member is facing billing calculation issue, meter reading issue, 
-            or billing rate issue with no service risk
+            or billing rate issue with no service risk. A member-reported money discrepancy is treated as a 
+            money error in flight until verified - P2, even when unconfirmed. Left unverified, a discrepancy
+            carries forward on the account and compounds - toward delinquency,
+            disconnection, and added charges - so the member is financially affected
+            from the moment it is reported.
             - P3: the member is complaining about not receiving the bill, new service inquiry, 
             bill calculation explanation, related to inquiry or improvement feedback 
             </priority_rules>
