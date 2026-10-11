@@ -56,83 +56,88 @@ if the member is without service or a disconnection notice has been issued,
 priority is P1; the discrepancy rule does not downgrade imminent risk.
 Prediction: EX-015 = P1 on both runs; EX-019 STAYS P2 (its text carries no
 service risk, so the clause must not reach it); nothing else moves.
-Status: ⟨queued — Sunday's first 20 minutes | run tonight: result …⟩
+Status: EXECUTED 2026-09-19 — record below.
+
+## Experiment: priority precedence clause (executed 2026-09-19)
+Commit: ⟨hash⟩ (spec change alone) · Compared against: 2026-09-18 run pair
+Runs: results/⟨run1⟩.json · results/⟨run2⟩.json · Cost: ~$0.22
+
+| Check | Predicted | Run 1 | Run 2 | Verdict |
+|---|---|---|---|---|
+| EX-015 priority restored to P1 | P1 | P1 ✓ | P1 ✓ | HELD |
+| EX-019 stays P2 (clause must not reach it) | P2 | P2 ✓ | P2 ✓ | HELD — no overreach |
+| All other records unchanged | hold | clean | clean | HELD |
+
+Overall verdict: PREDICTION HELD IN FULL — and the first clean sweep:
+category 20/20 · priority 20/20 · routing 20/20, on BOTH runs. 120 checks
+green across the pair. Noise floor on this pair: 0 records.
+
+Notes:
+- EX-019: discharge CONFIRMED — four consecutive stable P2 runs since the
+  impact rule (2 on 09-18, 2 today). Root cause remains: under-specified
+  boundary, fixed by policy sentence.
+- EX-002: clean on both runs. STAYS on the watch list — one clean pair is
+  within a wobbler's established behavior; logged as evidence, not
+  acquittal.
+- <priority_rules> now reads as a system: general impact rule → discrepancy
+  clarification (09-18) → precedence clause (09-19). Each sentence traceable
+  to the record that demanded it (EX-019, EX-015).
+
+Instrument note (the honest half of a perfect score): the accuracy metric
+has no headroom left — future experiments on this set can only reveal
+regressions, never improvements — and the calibration table degenerates on
+a clean sweep (every confidence bucket reads 100%, so the relationship it
+audits has nothing to show). The set is outgrown. Sunday's expansion is now
+necessary, not merely scheduled.
+
+A perfect score doesn't mean the model is finished — it means the exam is.
 
 ## Build: lint rules
-Commit: ⟨hash⟩ — lint_checks() added to classifier_v0.py, gold + predictions,
-scoring untouched. First run output: ⟨"LINT: clean" | fired on EX-0xx: …⟩
+Commit: 36d0433 — lint_checks() added to classifier_v0.py, gold + predictions,
+scoring untouched. Advisory only: prints after the report, flags for a human,
+never auto-corrects, writes nothing.
+Rule ① P3 + Field Service Order (a truck roll for a low-priority item).
+Rule ② P1 whose text carries none of: outage / no power / without power /
+disconnect.
 
-first run: EX-002 and EX-015 got mismatches, EX-019 is good. 
-{
-      "id": "EX-002",
-      "gold_category": "High Bill Complaint",
-      "gold_priority": "P2",
-      "gold_routing": "Billing Analyst",
-      "pred_category": "Meter Read Anomaly",
-      "pred_priority": "P2",
-      "pred_routing": "Field Service Order",
-      "confidence": "low",
-      "rationale": "The current read of 100 vs last read of 80 yields a delta inconsistent with 'same usage as last month' while the bill jumped from $100 to $1,000 with no rate change, indicating the billed kWh and dollar amount cannot both be trusted from these reads.",
-      "category_match": false,
-      "priority_match": true,
-      "routing_match": false
-    },
+First run output (replayed over results/run_20260919-1658.json — the clean
+sweep; lint reads saved rows, so no new model calls):
 
-    {
-      "id": "EX-015",
-      "gold_category": "High Bill Complaint",
-      "gold_priority": "P1",
-      "gold_routing": "Billing Analyst",
-      "pred_category": "High Bill Complaint",
-      "pred_priority": "P2",
-      "pred_routing": "Billing Analyst",
-      "confidence": "medium",
-      "rationale": "Member received a disconnection notice tied to an outstanding balance stemming from a disputed high bill with no resolution yet, requiring billing record investigation to correct the bill and remove the service risk before disconnection occurs.",
-      "category_match": true,
-      "priority_match": false,
-      "routing_match": true
-    },
-    {
-      "id": "EX-019",
-      "gold_category": "Net Metering True-Up",
-      "gold_priority": "P2",
-      "gold_routing": "Billing Analyst",
-      "pred_category": "Net Metering True-Up",
-      "pred_priority": "P2",
-      "pred_routing": "Billing Analyst",
-      "confidence": "low",
-      "rationale": "Member reports banked kWh credit balance is lower than expected, indicating a possible misapplication or miscalculation of net metering credits requiring billing record review.",
-      "category_match": true,
-      "priority_match": true,
-      "routing_match": true
-    },
+    LINT [gold] EX-004: P1 without outage/disconnection language — verify by hand
+    LINT [pred] EX-004: P1 without outage/disconnection language — verify by hand
+    LINT [gold] EX-008: P1 without outage/disconnection language — verify by hand
+    LINT [pred] EX-008: P1 without outage/disconnection language — verify by hand
 
-    for the second run: got false on priority_matc for EX-015 only, others are fine. 
-        {
-      "id": "EX-015",
-      "gold_category": "High Bill Complaint",
-      "gold_priority": "P1",
-      "gold_routing": "Billing Analyst",
-      "pred_category": "High Bill Complaint",
-      "pred_priority": "P2",
-      "pred_routing": "Billing Analyst",
-      "confidence": "medium",
-      "rationale": "Member received a disconnection notice tied to a disputed high bill surge that has not yet been reviewed or resolved, requiring billing records investigation to correct the bill and remove the service risk.",
-      "category_match": true,
-      "priority_match": false,
-      "routing_match": true
-    },
-    {
-      "id": "EX-019",
-      "gold_category": "Net Metering True-Up",
-      "gold_priority": "P2",
-      "gold_routing": "Billing Analyst",
-      "pred_category": "Net Metering True-Up",
-      "pred_priority": "P2",
-      "pred_routing": "Billing Analyst",
-      "confidence": "low",
-      "rationale": "Member reported that their kWh credit balance is lower than expected, suggesting possible misapplication or miscalculation of banked credits that requires billing record review.",
-      "category_match": true,
-      "priority_match": true,
-      "routing_match": true
-    },
+### Hand-verify verdicts (2 records, 4 lines — on a clean sweep gold and pred agree)
+| id | Fired | Text evidence | Verdict |
+|----|-------|---------------|---------|
+| EX-004 | ② | "transformer damaged, power out at the residence" | Lint wrong — gold P1 correct (member currently without service) |
+| EX-008 | ② | "today there is no electricity … when the service is going to be restored" | Lint wrong — gold P1 correct (member currently without service) |
+
+Tally: wrong golds caught 0 · model errors caught 0 · false positives 2.
+Contrast with Day 5 (4 wrong golds, 0 model errors): that lint was pointed at a
+set that still had wrong golds in it. This one is pointed at a set whose golds
+have been ratified four runs deep — a clean sweep leaves lint nothing to find.
+Day 5's asymmetry still holds, though: both firings are about gold, not the
+model.
+
+Root cause of both false positives: rule ②'s vocabulary is narrower than the
+spec rule it is supposed to police. <priority_rules> makes P1 "currently
+without service OR facing disconnection"; the vocabulary only recognizes how
+the second half gets phrased. "power out" and "no electricity" are how the
+first half actually reads, and neither is in the list.
+
+Rule ① fired on nothing: no record in the 20 carries P3 + FSO on either side.
+It is specified but unexercised — proven only against synthetic rows, not real
+data. The expanded set will not exercise it either (day10 Rows 4/5 are P2 + FSO).
+
+### The ONE change (candidate, NOT made tonight)
+- Change: extend rule ②'s vocabulary with the without-service half of the P1
+  rule — "power out", "no electricity", "service out", "lights out".
+- Prediction: EX-004 and EX-008 go quiet and the 20-record set reads
+  LINT: clean.
+- Risk to watch: a quieter rule ② is a weaker rule ②. Lint earns its keep by
+  firing on a P1 that should not be P1, and that event has not happened on this
+  set yet. Widening the vocabulary before lint has ever caught a real miss
+  tunes the instrument to the only data it has seen.
+

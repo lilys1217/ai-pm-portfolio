@@ -93,7 +93,24 @@ note. Prediction: EX-019 stable at P2 across two runs; nothing else moves.
 2026-09-18 — next experiment queued: precedence clause in <priority_rules> —
 imminent service risk (no service, or disconnection notice issued) is P1 and
 is not downgraded by the discrepancy rule. Prediction: EX-015 restored to P1
-on both runs; EX-019 stays P2; nothing else moves. Result: *pending*.
+on both runs; EX-019 stays P2; nothing else moves. 
+**Result (2026-09-19):** Held in full. EX-015 restored to P1 on both
+   runs; EX-019 stayed P2 on both (the clause did not overreach into
+   records without service risk). This change produced the project's first
+   clean sweep: category 20/20 · priority 20/20 · routing 20/20 on both
+   runs — 120 checks green. This is baseline v3 (commit ⟨hash⟩, run pair
+   ⟨files⟩) and supersedes all prior baselines. The honest half: the score
+   has reached its ceiling on n=20, and the calibration table degenerates
+   on a perfect run — the exam is outgrown, so the next experiment is the
+   exam itself.
+
+2026-09-19 — next experiment queued: golden set expansion to 40+ records.
+Coverage matrix v2 first: a deliberate probe for each new spec sentence
+(the discrepancy rule and the precedence clause), flavor-two
+contradictions, low-confidence targets, P1 variety beyond outages.
+Prediction: the expanded set breaks the clean sweep — new misses appear in
+the newly covered territory, giving the accuracy metric and calibration
+table their headroom back. Result: *pending*.
 
 ### Design decisions
 [...]
@@ -111,3 +128,9 @@ on both runs; EX-019 stays P2; nothing else moves. Result: *pending*.
   the member is financially affected from the moment it is reported. Encoded
   as a clarification after the general P2/P3 rule; EX-019, unstable across
   five prior runs, stabilized immediately under it.
+  - **Imminent service risk outranks unverified-discrepancy handling**
+  (2026-09-19). A disconnection notice in hand is today's impact, not
+  tomorrow's compounding consequence — so an issued notice or loss of
+  service is P1, and the discrepancy rule cannot downgrade it. Added as an
+  explicit precedence clause after the harness caught the two rules
+  composing to demote EX-015 on consecutive runs.
