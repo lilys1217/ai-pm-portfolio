@@ -67,3 +67,28 @@ Gold:   Meter Read Anomaly / P2 / Field Service Order
 - Precedence "member without service" twin of Row 3.
 - Low-confidence targets; P1 variety beyond outages; more flavor-two coverage.
 - Lint rule #3 (from Row 1's typo): flag any gold category outside the 6-value enum.
+
+## Pre-registration A - T=0 instrument study
+Experiment: run the expanded exam twice with temperature=0 passed explicitly
+Change (one variable): temperature only - spec, schema, records untouched
+Prediction: between the two T=0 runs, flips drop to 0-1 records (near-deterministic,
+  not deterministic); known wobblers (EX-002 family) stop flipping; overall accuracy
+  stays within +/-1 record of baseline v4 - T=0 removes variance, it does not add skill.
+Falsifier: 2+ records flip between the two T=0 runs, OR accuracy moves by 2+ records
+  vs baseline v4 in either direction.
+Instrument cost (watch, not predict): the flip-detector goes blind - note which side
+  each known wobbler froze on, for comparison against its baseline behavior.
+Result: (blank - runs next week, vs baseline v4)
+
+## Pre-registration B - rationale-field reorder (reasoning before verdicts)
+Experiment: move the `rationale` field to the FIRST position in the structured-output schema
+Change (one variable): field order only - FROM (category, priority, routing, confidence,
+  rationale) [verify this order in classifier_v0.py and correct if different]
+  TO (rationale, category, priority, routing, confidence). Same field name, same wording,
+  same spec, same temperature.
+Prediction: vs baseline v4 - accuracy same or better (+0 to +2 records), with any verdict
+  changes concentrated in boundary/contradiction probes; every record that was stable AND
+  correct in baseline keeps its verdict; run-to-run wobble no higher than baseline's.
+Falsifier: any baseline-stable-and-correct record changes verdict (overreach - EX-019 rule),
+  OR accuracy drops by 2+ records vs baseline v4, OR wobble increases.
+Result: (blank - runs next week, vs baseline v4)
